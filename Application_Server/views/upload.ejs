@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Files</title>
+</head>
+
+<body>
+    <a href="/trashbox">Trashbox</a> | <a href="/upload">Upload</a>
+    
+    <h1>Upload Files Here</h1>
+    <form action="" method="post" enctype="multipart/form-data">
+        <table>
+            <tr>
+                <td>Choose File : </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="file" name="uploads" id="" enctype="multipart/form-data">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="submit" value="Upload">
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    <h1>File list : </h1>
+    <table style="text-align: left;" border="1">
+        <th>
+            Filename
+        </th>
+        <th>
+            UploadTime
+        </th>
+        <th>
+            Size
+        </th>
+        <th>
+            Actions
+        </th>
+       
+        <% for (var i=0;i<results.length;i++) { %>
+            <tr>
+                <td>
+                    <%=results[i].Filename %>
+                </td>
+                <td>
+                    <%=results[i].CreatedAt.toISOString().
+                    replace(/T/, ' ').      
+                    replace(/\..+/, '') %>
+                </td>
+                <td>
+                    
+                  <% var size=results[i].Filesize; 
+                  var rem=size%1024; 
+                  size=size/1024;
+                  var unit=" KB";  
+                  if(size>=1024)
+                  {
+                      size=size/1024;
+                      unit=" MB";
+                  }
+                  if(size>=1024)
+                  {
+                    size=size/1024;
+                    unit=" GB";
+                  }
+                  
+                  %>
+                    
+                  <%= Math.round(size)+"."+ rem + unit %>
+                   
+                </td>
+                <td>
+                    <a href="#">Download</a> | 
+                    <a href="upload/delete/<%=results[i].FileID%>">Delete</a>
+                </td>
+            </tr>
+        <% } %>
+       
+
+       
+        
+    </table>
+</body>
+</html>

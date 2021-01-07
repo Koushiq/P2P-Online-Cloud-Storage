@@ -47,8 +47,5 @@ module.exports = {
           callback(status);
       }
 
-       
-          //save file metadata to app db from here
-
     }
 }

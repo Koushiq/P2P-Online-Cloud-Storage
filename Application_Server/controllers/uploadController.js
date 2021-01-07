@@ -3,15 +3,12 @@ const router  = express.Router();
 const fileBufferHash = require('object-hash');
 const processFiles = require('../services/processFileService.js');
 const fileModel = require('../models/Files.js');
-const peerPicker = require("../services/getPeer.js");
 
 router.get('/',function(req,res){
-    //console.log('here',peerPicker.getPeer());
-    peerPicker.getPeer();
+  
     fileModel.get(['king','alive'],(results)=>{
         res.render('upload',{results});
     });
-
 });
 
 
@@ -27,7 +24,7 @@ router.get('/delete/:id',function(req,res){
 
 
 router.post('/',function(req,res){
-    
+
     if(req.files!=null)
     {
         console.log('inside controller ',req.files.uploads);
@@ -50,7 +47,6 @@ router.post('/',function(req,res){
                 console.log("not copied");
             }
         });
-        
         console.log("inside controller ", req.files.uploads);
         
     }

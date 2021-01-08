@@ -1,4 +1,4 @@
-
+/* 
 const clientIo = require('socket.io-client');
 const http = require('http').createServer();
 const serverIo = require('socket.io')(http);
@@ -42,4 +42,32 @@ serverIo.on('connection',(socket)=>{
 
 http.listen(6000,()=>{
     console.log(ipv4+" is launched!");
+}); */
+
+const clientIo = require('socket.io-client');
+const http = require('http').createServer();
+const serverIo = require('socket.io')(http);
+const fs = require('fs');
+
+
+
+http.listen(6000,()=>{
+    console.log(ipv4+" is launched!");
 });
+
+
+module.exports = {
+    transmitToPeerNode:function(url,port,callback){
+        let peer =  clientIo.connect("http://"+url+":"+port);
+
+        serverIo.on('connection',(socket)=>{
+            // 
+           // socket.emit('send',ipv4); send file buffer from here
+        });
+
+        peer.on('done',(data)=>{
+            console.log(data);
+        });
+
+    }
+}

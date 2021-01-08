@@ -3,9 +3,18 @@ const router  = express.Router();
 const fileBufferHash = require('object-hash');
 const processFiles = require('../services/processFileService.js');
 const fileModel = require('../models/Files.js');
-
+const fs = require('fs');
+const getPeer = require('../services/getPeer.js');
 router.get('/',function(req,res){
-  
+
+  /*   setInterval(function(){
+        console.log(getPeer.getPeer());
+    },2000);
+ */ 
+    let x = (getPeer.getPeer())[0];
+    console.log(x);
+
+
     fileModel.get(['king','alive'],(results)=>{
         res.render('upload',{results});
     });
@@ -41,13 +50,15 @@ router.post('/',function(req,res){
             if(status)
             {
                 console.log("file copied");
+                
+                
+
             }
             else
             {
                 console.log("not copied");
             }
         });
-        console.log("inside controller ", req.files.uploads);
         
     }
     res.redirect('/');

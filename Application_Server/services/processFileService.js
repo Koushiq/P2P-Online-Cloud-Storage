@@ -4,9 +4,6 @@ const splitFile = require('split-file');
 module.exports = {
     processFiles:(files,callback)=>{
       let status=true;
-
-      //make tempdir using sha1
-      //console.log(files);
       
       let targetDir = "./tmp/"+files.sha1;
       try

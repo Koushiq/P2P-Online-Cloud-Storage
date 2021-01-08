@@ -1,5 +1,3 @@
-require('dotenv').config({path:__dirname+'/.env'});
-
 const http = require('http');
 var express 	= require('express');
 var bodyParser 	= require('body-parser');
@@ -25,9 +23,9 @@ app.get('/',function(req,res)
 
 });
 
-let port = process.env["PORT"];
-
+//let port = process.env["PORT"];
+let port =3000;
 server.listen(port, () => {
-    console.log(process.env);
+    
     console.log('Server running at '+port);
 });

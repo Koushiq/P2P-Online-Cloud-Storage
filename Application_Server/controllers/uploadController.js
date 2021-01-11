@@ -4,20 +4,14 @@ const fileBufferHash = require('object-hash');
 const processFiles = require('../services/processFileService.js');
 const fileModel = require('../models/Files.js');
 const fs = require('fs');
-const getPeer = require('../services/getPeer.js');
+
+
 router.get('/',function(req,res){
-
-  /*   setInterval(function(){
-        console.log(getPeer.getPeer());
-    },2000);
- */ 
-    let x = (getPeer.getPeer())[0];
-    console.log(x);
-
 
     fileModel.get(['king','alive'],(results)=>{
         res.render('upload',{results});
     });
+
 });
 
 
@@ -47,12 +41,12 @@ router.post('/',function(req,res){
         });
 
         processFiles.processFiles(req.files.uploads,(status)=>{
-            if(status)
+            if(status!=false)
             {
                 console.log("file copied");
+                console.log(status);
                 
                 
-
             }
             else
             {
@@ -63,5 +57,7 @@ router.post('/',function(req,res){
     }
     res.redirect('/');
 });
+
+
 
 module.exports = router;

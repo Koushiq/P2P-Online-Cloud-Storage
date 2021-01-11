@@ -34,14 +34,42 @@ module.exports = {
 
             splitFile.splitFileBySize(path, 500*1024)  // shard copied file 
             .then((names) => {
-              //console.log("files sharded , file shards : "+names);
+              
+              try {
+                
+                fs.unlinkSync(path);
+
+                let h = files.sha1;
+                let s = files.size;
+
+               /* let fileObject = {
+                  h:s
+               } */
+              // let fileObject = {};
+               //fileObject[h]=s;
+
+               let x = __dirname+'/../dht.json';
+               let fileString = JSON.parse(fs.readFileSync(x));
+               
+              // fileString.push(fileObject);
+              fileString[h]=s;
+               fs.writeFileSync(x,JSON.stringify(fileString,null,4));
+                 //file removed
+
+              } catch(err) {
+                console.error(err);
+              }
             })
             .catch((err) => {
-              //console.log('FIle not split reason : ', err);
+              console.log('File not split reason : ', err);
             });
 
           });
-          callback(status);
+          callback(targetDir);
+      }
+      else
+      {
+        callback(status);
       }
 
     }

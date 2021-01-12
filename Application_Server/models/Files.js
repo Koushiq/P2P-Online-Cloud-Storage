@@ -30,6 +30,13 @@ module.exports =
             }
 		});
     },
+    getFileHash:(user,callback)=>{
+        let sql="select * from files where FileId=? and Filestatus=?";
+        db.getResults(sql,user,(result)=>{
+            if(result.length>0){ return callback(result);}
+            else{return callback([]);}
+        });
+    },
 
     get:(user,callback)=>{
         let sql="select * from files where CreatedBy=? and Filestatus=?";

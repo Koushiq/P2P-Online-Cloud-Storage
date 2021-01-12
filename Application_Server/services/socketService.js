@@ -5,7 +5,7 @@ const fs = require('fs');
 const peerNode =  require('../services/getPeer.js');
 
 
-let p = peerNode.getPeer()[1];
+let p = peerNode.getPeer()[1]; // set index to 0 get the host with min latency 
 let clientSocket  = clientIo.connect("http://"+p.ipv4+":"+p.port);
 let dirNames = fs.readdirSync(__dirname+'/../tmp/');
 let socketId = null;
@@ -55,8 +55,7 @@ if(dirNames.length>0)
                         else
                         {
                             console.log('chunk count did not match' );
-                            process.exit(1);
-
+                            //process.exit(1);
                         }
                     }
                     else
@@ -82,16 +81,11 @@ if(dirNames.length>0)
             if(delcount==dirNames.length)
             {
                 console.log('connection terminated');
-                process.exit(1);
+                //process.exit(1);
             }
             //console.log(message);
-           
         });
-
     });
-
-    
-
 
 }
 else
@@ -101,5 +95,5 @@ else
 }
 
 http.listen(6000,()=>{
-    console.log('socket server fired');
+    //console.log('socket server fired');
 });

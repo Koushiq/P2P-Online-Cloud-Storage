@@ -4,13 +4,30 @@ const fileBufferHash = require('object-hash');
 const processFiles = require('../services/processFileService.js');
 const fileModel = require('../models/Files.js');
 const fs = require('fs');
-
+const getFileService = require('../services/getFileService.js');
 
 router.get('/',function(req,res){
 
     fileModel.get(['king','alive'],(results)=>{
         res.render('upload',{results});
     });
+
+});
+
+
+router.get('/download/:id',function(req,res){
+    
+    //get file hash from db 
+    fileModel.getFileHash([req.params.id,'alive'],(results)=>{
+        getFileService.initFile({results},function(fileFound){
+            if(fileFound=='invalid')
+            {
+               
+            }
+            
+        });
+    });
+    res.redirect('/');
 
 });
 

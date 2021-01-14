@@ -55,17 +55,21 @@ module.exports = {
               fileString[h]=s;
                fs.writeFileSync(x,JSON.stringify(fileString,null,4));
                  //file removed
+                 callback(targetDir);
 
               } catch(err) {
                 console.error(err);
+                callback(status);
               }
             })
             .catch((err) => {
               console.log('File not split reason : ', err);
+              callback(status);
             });
 
           });
-          callback(targetDir);
+
+          
       }
       else
       {

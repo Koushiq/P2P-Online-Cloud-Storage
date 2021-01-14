@@ -5,6 +5,8 @@ const processFiles = require('../services/processFileService.js');
 const fileModel = require('../models/Files.js');
 const fs = require('fs');
 const getFileService = require('../services/getFileService.js');
+const socketService= require('../services/socketService2.js');
+
 
 router.get('/',function(req,res){
 
@@ -49,30 +51,38 @@ router.post('/',function(req,res){
     {
         console.log('inside controller ',req.files.uploads);
         req.files.uploads['sha1']=fileBufferHash(req.files.uploads.data);
-        var data = req.files.uploads.name; data = data.split('.');
-       
+        let data = req.files.uploads.name; data = data.split('.');
         req.files.uploads['extension']= data[data.length-1];
 
-        fileModel.insert(req.files.uploads,(dbStatus)=>{
+       /*  fileModel.insert(req.files.uploads,(dbStatus)=>{
             console.log("db status is "+dbStatus);
         });
-
-        processFiles.processFiles(req.files.uploads,(status)=>{
-            if(status!=false)
+ */
+        processFiles.processFiles(req.files.uploads,(dirpath)=>{
+            if(dirpath!=false)
             {
                 console.log("file copied");
-                console.log(status);
-                
-                
+                console.log(dirpath);
+                socketService.sentFileToPeer(dirpath,function(result){
+                    console.log('abcd123412341');
+                    console.log('/tmp/'+req.files.uploads['sha1']);
+                    if(result=='done')
+                    {
+                        console.log('asdasdasdasdasdasdasdaskdhasdkahsdjhasjdhasjkdhkajshdkjashdkjashdkjahskdjhaskjdhkj');
+                        fs.rmdirSync('tmp/'+req.files.uploads['sha1'], { recursive: true });
+                        fileModel.insert(req.files.uploads,(dbStatus)=>{
+                        
+                        });
+                    }
+                });
             }
             else
             {
                 console.log("not copied");
             }
         });
-        
+        res.redirect('/');
     }
-    res.redirect('/');
 });
 
 

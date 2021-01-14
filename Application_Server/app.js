@@ -3,10 +3,13 @@ var express 	= require('express');
 var bodyParser 	= require('body-parser');
 var uploadController = require('./controllers/uploadController');
 var trashboxController = require('./controllers/trashboxController');
+const fs = require('fs');
 
 var app = express();
 const server = http.createServer(app);
+const socketServer = require('socket.io')(server);
 const fileUpload = require('express-fileupload');
+const { fstat } = require('fs');
 
 app.use(fileUpload());
 
@@ -25,9 +28,17 @@ app.get('/',function(req,res)
 
 });
 
+
+
 //let port = process.env["PORT"];
 let port =3000;
 server.listen(port, () => {
     
     console.log('Server running at '+port);
+});
+
+
+socketServer.on('connection',function(socket){
+    let globalTrackers = JSON.parse(fs.readFileSync('trackers.json'));
+    socket.emit('getTracker',globalTrackers);
 });

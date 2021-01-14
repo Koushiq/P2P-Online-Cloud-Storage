@@ -1,4 +1,4 @@
-const clientIo = require('socket.io-client');
+/* const clientIo = require('socket.io-client');
 const http = require('http').createServer();
 const serverIo = require('socket.io')(http);
 const fs = require('fs');
@@ -48,7 +48,7 @@ if(dirNames.length>0)
                             }
                             let fileExtension =chunkCountInFolder[0].split('.');
                             fileobject[dirNames[i]+"."+fileExtension[fileExtension.length-2]]=filebuffer;
-
+                            console.log(fileobject)
                             serverIo.to(socketId).emit('sendfile',fileobject);
                             
                         }
@@ -67,7 +67,7 @@ if(dirNames.length>0)
             }
         });
 
-        socket.on('deletefile',function(message){
+         socket.on('deletefile',function(message){
             let dir =__dirname+'/../tmp/'+ dirNames[delcount];
             try {
                 fs.rmdirSync(dir, { recursive: true });
@@ -81,10 +81,10 @@ if(dirNames.length>0)
             if(delcount==dirNames.length)
             {
                 console.log('connection terminated');
-                //process.exit(1);
+                process.exit(1);
             }
             //console.log(message);
-        });
+        }); 
     });
 
 }
@@ -96,4 +96,4 @@ else
 
 http.listen(6000,()=>{
     //console.log('socket server fired');
-});
+}); */

@@ -10,7 +10,7 @@ module.exports= {
         let fileName = object.results[0].Filename;
         let fileExtension= fileName.split('.');
             fileExtension=fileExtension[fileExtension.length-1];
-        
+
         let dhtData = JSON.parse(fs.readFileSync('dht.json'));
         let peerList = getPeer.getPeer();
         let chunkCount=0;
@@ -18,19 +18,37 @@ module.exports= {
         console.log(peerList);
         let activePeerTrack=[];
         let chunkList = [];
-        let visited = [];
+        let visited = {};
         if(dhtData[fileHash]!=undefined)
         {
             chunkCount  =  Math.ceil(dhtData[fileHash]/(500*1024));
-            
+            let digitCount =0 ;
+            let x= chunkCount;
+           // console.log('digit count ',x);
+            let digitPrefix='';
+            while(x!=0)
+            {
+                console.log(x);
+                x=x/10;
+                x=Math.floor(x);
+                digitCount++;
+            }
+
+
+           // console.log('digit prefix '+digitPrefix);
             for(let i=0;i<chunkCount;i++)
             {
-                let str=fileHash+"."+fileExtension+".sf-part";
-                if(i<9)
+                let str='';
+                str=fileHash+"."+fileExtension+".sf-part";
+                let target=((i+1).toString()).length;
+                let destination =( digitCount.toString());  
+                for(let j=target;j<digitCount;j++)
                 {
-                    str+="0";
+                    str+='0';
                 }
+
                 str+=(i+1);
+                console.log(str);
                 chunkList.push(str);
             }
 
@@ -40,42 +58,48 @@ module.exports= {
             for(let i=0;i<peerList.length;i++)
             {
                 socketList.push(client.connect("http://"+peerList[i].ipv4+":"+peerList[i].port));
-                socketList[i].on('promtDownload',function(data){
+                socketList[i].on('promtFile',function(data){
                     console.log(data);
-                    activePeerTrack.push(i);
-                    
+                    activePeerTrack.push(i); // 4 
+                });
+
+                setTimeout(function(){
+
                     if(activePeerTrack.length>0)
                     {
                         for(let j=0,k=0;j<chunkList.length;j++)
                         {
-                            socketList[activePeerTrack[k]].on('downloadFileHash',function(message){
-                                console.log(message);
+                          
+                            if(visited[j]!=true || visited[j]==undefined)
+                            {
                                 socketList[activePeerTrack[k]].emit('retriveFile',chunkList[j]);
-                                k++;
-                                k=k%activePeerTrack.length;
-                            });
+                                visited[j]=true;
+                            }
+                            k++;
+                            k=k%activePeerTrack.length;
                         }
                     }
                     else
                     {
                         console.log('active peer does not exits');
                     }
-                });
+                         
+                },1000);
 
                 let downloadCount=0;
                 let paths=[];
                 socketList[i].on('filedata',function(message){
-                    let path="downloaded/"+fileHash+"."+fileExtension+".sf-part";
+                    
+                    let path="downloaded/"+message['filename'];
                     downloadCount++;
-                    if(downloadCount<10)
-                    {
-                        path+="0";
-                    }
-                    paths.push(path+downloadCount);
-                    fs.writeFile(paths[paths.length-1],message,(err)=>{
+                  
+                    paths.push(path);
+                    fs.writeFile(path,message['buffer'],(err)=>{
                         console.log(err);
                         if(chunkCount==downloadCount)
                         {
+                            paths.sort();
+                            console.log('paths of file to be written to disk',paths);
                             splitFile.mergeFiles(paths, 'downloaded/'+fileName)
                             .then(() => {
                                 console.log('Done!');
@@ -83,23 +107,16 @@ module.exports= {
                             .catch((err) => {
                                 console.log('Error: ', err);
                             });
-
                             downloadCount=0;
                             paths=[];
-
                         }
                     });
-                });
-
+                }); 
             }
-
         }
         else
         {
             callback('invalid');
         }
-       
-
-        //callback(dhtData[fileHash]);
     }
 }

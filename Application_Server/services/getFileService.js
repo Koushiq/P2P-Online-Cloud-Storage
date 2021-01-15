@@ -2,10 +2,12 @@ const fs = require('fs');
 const getPeer = require('./getPeer.js');
 const client = require('socket.io-client');
 const splitFile = require('split-file');
+
 module.exports= {
     initFile:function(object,callback){
-
+        let downloadCount=0;
         let socketList = [];
+        let paths=[];
         let fileHash = object.results[0].Filehash;
         let fileName = object.results[0].Filename;
         let fileExtension= fileName.split('.');
@@ -86,13 +88,14 @@ module.exports= {
                          
                 },1000);
 
-                let downloadCount=0;
-                let paths=[];
+               
+               
                 socketList[i].on('filedata',function(message){
                     
                     let path="downloaded/"+message['filename'];
                     downloadCount++;
-                  
+                    console.log('download count = '+downloadCount);
+                    console.log('chunk count '+chunkCount);
                     paths.push(path);
                     fs.writeFile(path,message['buffer'],(err)=>{
                         console.log(err);

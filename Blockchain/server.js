@@ -1,97 +1,61 @@
-const express = require('express');
-const app = express();
-const http = require('http').createServer();
-var port = 3000;
-const io = require('socket.io')(http);
-const io2 = require('socket.io-client');
-const io3 = require('socket.io-client');
-var createIoPromise = require ('socket.io-promise');
-const ioPromise = createIoPromise;
+var express = require('express');
+var app = express();
+var http = require('http');
+var server = http.createServer(app);
+var io = require('socket.io')(server);
+var clio = require('socket.io-client');
+var socket1 = clio.connect("http://localhost:3001");
+var socket2 = clio.connect("http://localhost:3002")
+var socket3 = clio.connect("http://localhost:3003")
+var socketIDs = [];
 
-//const io4 = require('socket.io')(http);
-const fs = require('fs');
-var block = require('./blockchain');
-var count = 0;
-var bcdata = {};
-var resArr = [];
-
-
-let socket2 = io2.connect("http://localhost:3001");
-
-socket2.on('client12other', (data)=>{
-    console.log("Data Received from Client: ", data);
-    if(data == "Client-1: Approved"){
-         resArr.push(1);
+function isEmpty(arg) {
+    for (var item in arg) {
+      return false;
     }
+    return true;
+  }
+
+var list ={FileName: "Anyfile", Author:"Sowvik",TimeStamp:"1/1/2021", Size:"500MB", Hash:"dsjfoiJKLJSLKJhflkzxnl85290sjdJFDSKL",Extension: ".mp3"}
+
+
+
+
+io.on('connection', (socket)=> {
+
+    socketIDs.push(socket.id);
+    socket.emit('servermessage', "This message is from server");
 });
 
-let socket3 = io3.connect("http://localhost:3002");
-
-socket3.on('client22other', (data)=>{
-    console.log("Data Received from Client: ", data);
-    if(data == "Client-2: Approved"){
-       resArr.push(1);
-    }
-
+socket1.on("peer1message", (data)=>{
+    console.log("Received from Peer-1: "+data);
+});
+socket2.on("peer2message", (data)=>{
+    console.log("Received from Peer-2: "+data);
 });
 
-
-
-io.on("connection", (socket) => {
-    io.emit("server2client","Need Approval");
-    console.log("Receiver Connected ");
+socket3.on("peer3message", (data)=>{
+    console.log("Received from Peer-3: "+data);
 });
 
-http.listen(port, () => {
-
-    console.log("Server is up at port: "+port);
-
-        setTimeout(sendBC, 2000);
-        //sendBC();
+socket1.on("ack", (data)=>{
+    console.log("Received from Peer-1: "+data);
+});
+socket2.on("ack", (data)=>{
+    console.log("Received from Peer-2: "+data);
 });
 
-function sendBC(){
+socket3.on("ack", (data)=>{
+    console.log("Received from Peer-3: "+data);
+});
 
-    console.log("Inside function a");
-    console.log("Response Array:"+resArr.length);
-    if(resArr.length === 2){
-    let data = blockAdd();
-    if(data != null){
+server.listen(3000, ()=>{
+    console.log("Server is UP *: 3000");
+})
 
-        io.on("connection", (socket) => {
-            io.emit("sendblock",bcdata);
-            console.log("BC Sent! ");
-        });
-
-    }
-    else{
-        console.log("Data is null");
-    }
-}
-else
-{
-    console.log("Not Everyone Permitted");
-}
-}
-
-
-function blockAdd(){
-
-    console.log("Adding Block");
-
-block.blockAdd({FileName: "Anyfile", Author:"Sowvik",TimeStamp:"1/1/2021", Size:"500MB", Hash:"dsjfoiJKLJSLKJhflkzxnl85290sjdJFDSKL",Extension: ".mp3"});
-block.blockAdd({FileName: "Test File", Author:"Mushfiq",TimeStamp:"1/5/2023", Size:"750MB", Hash:"dfgdgdfgdfsdvdfgnee534",Extension: ".ransomware"})
-block.blockAdd({FileName: "Movie", Author:"Test",TimeStamp:"1/1/2021", Size:"500MB", Hash:"dfhhKHWDQIowieyoy(*Y*(y0394L", Extension: ".txt"})
-//block.printBlockchain();
-bcdata = block.blockChainData();
-
-    return bcdata;
-
-}
-
-
-
-//var bcdata = block.blockChainData();
-
-
-
+setTimeout(()=>{
+    io.on('connection', ()=>{
+        console.log("Socket ID: "+socketIDs[0]);
+        io.to(socketIDs[0]).emit('block',list);
+    })
+}, 300)

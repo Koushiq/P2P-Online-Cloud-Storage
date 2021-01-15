@@ -1,0 +1,24 @@
+[
+  {
+    "data": {
+      "FileName": "GenesisBlock",
+      "Author": "Sowvik",
+      "Date": "13/12/2020",
+      "Extension": ""
+    },
+    "hash": "1748ac4db9ea78b83b0d52c01f7ea350c197b2639aec3618ac428a55dc5d85ff",
+    "prevHash": "0"
+  },
+  {
+    "data": {
+      "FileName": "Anyfile",
+      "Author": "Sowvik",
+      "TimeStamp": "1/1/2021",
+      "Size": "500MB",
+      "Hash": "dsjfoiJKLJSLKJhflkzxnl85290sjdJFDSKL",
+      "Extension": ".mp3"
+    },
+    "hash": "894a57dd2821544d94b4c20be50e1bae325333a7c58dc7a0807b91d35f6df788",
+    "prevHash": "1748ac4db9ea78b83b0d52c01f7ea350c197b2639aec3618ac428a55dc5d85ff"
+  }
+]

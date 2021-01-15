@@ -1,4 +1,5 @@
 const SHA256 = require('crypto-js/sha256');
+const fs = require('fs');
 
 class Block{
 
@@ -16,10 +17,11 @@ class Block{
   class BlockChain{
         constructor(){
             this.blockchain = [this.genesisBlock()];
+
         }
 
         genesisBlock(){
-            return new Block({FileName: "GenesisBlock", Author:"Sowvik", Date: "13/12/2020", Extensions: ".txt"},"0");
+            return new Block({FileName: "GenesisBlock", Author:"Sowvik", Date: "13/12/2020", Extension: ""},"0");
         }
         lastBlockHash(){
             return this.blockchain[this.blockchain.length-1];

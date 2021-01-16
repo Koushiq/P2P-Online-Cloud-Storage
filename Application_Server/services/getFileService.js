@@ -2,9 +2,10 @@ const fs = require('fs');
 const getPeer = require('./getPeer.js');
 const client = require('socket.io-client');
 const splitFile = require('split-file');
-
+const encryptor = require('file-encryptor');
 module.exports= {
     initFile:function(object,callback){
+        let key = 'random';
         let downloadCount=0;
         let socketList = [];
         let paths=[];
@@ -106,6 +107,9 @@ module.exports= {
                             console.log('paths of file to be written to disk',paths);
                             splitFile.mergeFiles(paths, 'downloaded/'+fileName)
                             .then(() => {
+                                /*encryptor.decryptFile('encrypted.dat', 'output_file.txt', key, function(err) {
+                                    // Decryption complete.
+                                });*/
                                 console.log('Done!');
                             })
                             .catch((err) => {

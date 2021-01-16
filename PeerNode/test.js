@@ -44,11 +44,10 @@ server.on('connection',function(socket){
 	
 		let fileName = fileObject['filename'];
 		 fileName=fileName.split('.');
-		
+		 
 		if (!fs.existsSync('files/'+fileName[0])){
 		    fs.mkdirSync('files/'+fileName[0]);
 		}
-		
 		fs.writeFile('files/'+fileName[0]+'/'+fileObject['filename'],fileObject['buffer'],(err)=>{
 			console.log('error is ',err);
 			if(err==null || err==undefined)
@@ -63,7 +62,6 @@ server.on('connection',function(socket){
 						console.log('I am here',localTrackers[i%localTrackers.length]['ipv4']);
 						socketList[i].emit('sendFileToPeerNodes',fileObject);
 					}
-					
 				}
 
 			}

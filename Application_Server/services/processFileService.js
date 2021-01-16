@@ -32,7 +32,7 @@ module.exports = {
               console.log("file not copied reason : "+err);
             }
 
-            splitFile.splitFileBySize(path, 500*1024)  // shard copied file 
+            splitFile.splitFileBySize(path, 512*1024)  // shard copied file 
             .then((names) => {
               
               try {

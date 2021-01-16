@@ -6,14 +6,11 @@ const peerNode =  require('../services/getPeer.js');
 
 module.exports = {
     sentFileToPeer:function(dirpath,callback){
-        let p = peerNode.getPeer()[1];
+        let p = peerNode.getPeer()[0];
         let clientSocket  = clientIo.connect("http://"+p.ipv4+":"+p.port);
         let dirFiles = fs.readdirSync(dirpath);
         let chunkSendCount = 0;
         console.log('inside socketService module ');
-      /*   console.log(dirpath);
-        console.log(p);
-        console.log(dirFiles); */
         console.log("http://"+p.ipv4+":"+p.port);
         clientSocket.on('promtFile',function(message){
             console.log(message);

@@ -33,7 +33,7 @@ client.on('getTracker',function(globalTracker){
 });
 
 
-client.on('sendFileToPeerNodes',function(fileObject){
+/* client.on('sendFileToPeerNodes',function(fileObject){
 		let fileName = fileObject['filename'];
 		 fileName=fileName.split('.');
 		
@@ -49,7 +49,7 @@ client.on('sendFileToPeerNodes',function(fileObject){
 				
 			}
 		});
-	});
+	}); */
 
 
 
@@ -82,10 +82,11 @@ server.on('connection',function(socket){
 				//socket.broadcast.emit("sendFileToPeerNodes", fileObject);
 				for(let i=0;i<socketList.length;i++)
 				{
-					console.log('ipv4 = '+ipv4+' localTrackers[i][ipv4]='+localTrackers[i]['ipv4']);
-					if(ipv4!=localTrackers[i]['ipv4'])
+					console.log('ipv4 = '+ipv4+' localTrackers[i][ipv4]='+localTrackers[i%localTrackers.length]['ipv4']);
+					console.log('serverport = '+serverPort+' localTrackers[i][port]= '+localTrackers[i%localTrackers.length]['port'] );
+					if(ipv4!=localTrackers[i%localTrackers.length]['ipv4'] || serverPort!=localTrackers[i%localTrackers.length]['port'])
 					{
-						console.log('I am here',localTrackers[i]['ipv4']);
+						console.log('I am here',localTrackers[i%localTrackers.length]['ipv4']);
 						socketList[i].emit('sendFileToPeerNodes',fileObject);
 					}
 					
@@ -94,13 +95,13 @@ server.on('connection',function(socket){
 			}
 		});
 	});
-	
+
 	socket.on('sendFileToPeerNodes',function(fileObject){
 		let fileName = fileObject['filename'];
 		 fileName=fileName.split('.');
 		
 		if (!fs.existsSync('files/'+fileName[0])){
-			fs.mkdirSync('files/'+fileName[0]);
+		    fs.mkdirSync('files/'+fileName[0]);
 		}
 		
 		fs.writeFile('files/'+fileName[0]+'/'+fileObject['filename'],fileObject['buffer'],(err)=>{
@@ -108,6 +109,7 @@ server.on('connection',function(socket){
 			if(err==null || err==undefined)
 			{
 				//socket.emit('processed',fileObject['filename']+' proccesing is done');
+				
 			}
 		});
 	});
@@ -138,12 +140,5 @@ server.on('connection',function(socket){
 
 
 http.listen(serverPort,()=>{
-	console.log("6000 port running");
+	console.log(serverPort+" port running");
 });
-
-
-
-
-
-//
-

@@ -23,7 +23,7 @@ module.exports= {
         let visited = {};
         if(dhtData[fileHash]!=undefined)
         {
-            chunkCount  =  Math.ceil(dhtData[fileHash]/(500*1024));
+            chunkCount  =  Math.ceil(dhtData[fileHash]/(512*1024));
             let digitCount =0 ;
             let x= chunkCount;
            // console.log('digit count ',x);
@@ -43,11 +43,12 @@ module.exports= {
                 let str='';
                 str=fileHash+"."+fileExtension+".sf-part";
                 let target=((i+1).toString()).length;
-                let destination =( digitCount.toString());  
+                let destination =( digitCount.toString()); 
                 for(let j=target;j<digitCount;j++)
                 {
                     str+='0';
                 }
+              
 
                 str+=(i+1);
                 console.log(str);

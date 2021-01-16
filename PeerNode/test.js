@@ -6,11 +6,10 @@ const fs = require('fs');
 const client = io.connect("http://192.168.0.100:3000");
 const serverPort=6000;
 let socketList=[];
-//console.log(client.socket.sessionid);
+
 
 client.on('ping',function(message){
 
-	//console.log(client.id);
 	let address={
 		ip:ipv4,
 		port:serverPort
@@ -20,52 +19,29 @@ client.on('ping',function(message){
 });
 
 client.on('getTracker',function(globalTracker){
-	//console.log(globalTracker);
+	
 	fs.writeFileSync('trackers.json',JSON.stringify(globalTracker,null,4));
 	let localTrackers = JSON.parse(fs.readFileSync('trackers.json'));
 	
 	for(let i=0;i<localTrackers.length;i++)
 	{
-		//console.log('http://'+localTrackers[i]['ipv4']+":"+localTrackers[i]['port']);
 		socketList.push(io.connect('http://'+localTrackers[i]['ipv4']+":"+localTrackers[i]['port']));
 	}
 	
 });
 
 
-/* client.on('sendFileToPeerNodes',function(fileObject){
-		let fileName = fileObject['filename'];
-		 fileName=fileName.split('.');
-		
-		if (!fs.existsSync('files/'+fileName[0])){
-		    fs.mkdirSync('files/'+fileName[0]);
-		}
-		
-		fs.writeFile('files/'+fileName[0]+'/'+fileObject['filename'],fileObject['buffer'],(err)=>{
-			console.log('error is ',err);
-			if(err==null || err==undefined)
-			{
-				//socket.emit('processed',fileObject['filename']+' proccesing is done');
-				
-			}
-		});
-	}); */
 
 
 
 server.on('connection',function(socket){
-	//socket.emit('promtDownload','begin download');
 	
-	//socket.emit('downloadFileHash','random');
 	console.log('new connection');
 	socket.emit('promtFile','start sending file');
 	let localTrackers = JSON.parse(fs.readFileSync('trackers.json'));
-	//console.log(localTrackers);
 	socket.on('processFile',function(fileObject){
 	
-		//console.log('inside process files');
-		//console.log(fileObject);
-		//socket.emit('processed','done processing');
+	
 		let fileName = fileObject['filename'];
 		 fileName=fileName.split('.');
 		
@@ -78,8 +54,6 @@ server.on('connection',function(socket){
 			if(err==null || err==undefined)
 			{
 				socket.emit('processed',fileObject['filename']+' proccesing is done');
-				//console.log('localtrackers inside write ',localTrackers);
-				//socket.broadcast.emit("sendFileToPeerNodes", fileObject);
 				for(let i=0;i<socketList.length;i++)
 				{
 					console.log('ipv4 = '+ipv4+' localTrackers[i][ipv4]='+localTrackers[i%localTrackers.length]['ipv4']);
@@ -108,7 +82,6 @@ server.on('connection',function(socket){
 			console.log('error is ',err);
 			if(err==null || err==undefined)
 			{
-				//socket.emit('processed',fileObject['filename']+' proccesing is done');
 				
 			}
 		});

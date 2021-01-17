@@ -1,11 +1,12 @@
 const http = require('http');
-var express 	= require('express');
-var bodyParser 	= require('body-parser');
-var uploadController = require('./controllers/uploadController');
-var trashboxController = require('./controllers/trashboxController');
+let express 	= require('express');
+let bodyParser 	= require('body-parser');
+let uploadController = require('./controllers/uploadController');
+let trashboxController = require('./controllers/trashboxController');
+let downloadController = require('./controllers/downloadController');
 const fs = require('fs');
 
-var app = express();
+let app = express();
 const server = http.createServer(app);
 const socketServer = require('socket.io')(server);
 const fileUpload = require('express-fileupload');
@@ -14,6 +15,8 @@ const fileUpload = require('express-fileupload');
 app.use(fileUpload());
 
 app.set('view engine', 'ejs');
+app.use('/upload/download/',express.static('downloaded'));
+app.use('/downloaded',express.static('downloaded'));
 
 app.use(bodyParser.urlencoded({extended: false}));
 
@@ -21,6 +24,8 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 app.use('/upload', uploadController);
 app.use('/trashbox',trashboxController);
+app.use('/downloadFile',downloadController);
+app.use(express.static('downloaded'));
 
 app.get('/',function(req,res)
 {

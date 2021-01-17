@@ -6,7 +6,7 @@ const fileModel = require('../models/Files.js');
 const fs = require('fs');
 const getFileService = require('../services/getFileService.js');
 const socketService= require('../services/socketService2.js');
-
+let dhtData = JSON.parse(fs.readFileSync('dht.json'));
 
 router.get('/',function(req,res){
 
@@ -21,15 +21,31 @@ router.get('/download/:id',function(req,res){
     
     //get file hash from db 
     fileModel.getFileHash([req.params.id,'alive'],(results)=>{
-        getFileService.initFile({results},function(fileFound){
-            if(fileFound=='invalid')
-            {
-               
-            }
-            
-        });
+        let fileHash = results[0].Filehash;
+        let fileName = results[0].Filename;
+        console.log(results);
+        console.log(dhtData);
+        if(dhtData[fileHash]!==undefined || dhtData[fileHash]!=null)
+        {
+            console.log(dhtData);
+            getFileService.initFile({results},function(fileFound){
+                if(fileFound==='invalid')
+                {
+                    res.redirect('/');
+                }
+                else
+                {
+                    res.redirect('/downloadFile/'+req.params.id);
+                }
+
+            });
+        }
+        else
+        {
+            res.redirect('/');
+        }
+
     });
-    res.redirect('/');
 
 });
 
@@ -54,10 +70,6 @@ router.post('/',function(req,res){
         let data = req.files.uploads.name; data = data.split('.');
         req.files.uploads['extension']= data[data.length-1];
 
-       /*  fileModel.insert(req.files.uploads,(dbStatus)=>{
-            console.log("db status is "+dbStatus);
-        });
- */
         processFiles.processFiles(req.files.uploads,(dirpath)=>{
             if(dirpath!=false)
             {
@@ -68,7 +80,6 @@ router.post('/',function(req,res){
                     console.log('/tmp/'+req.files.uploads['sha1']);
                     if(result=='done')
                     {
-                        console.log('asdasdasdasdasdasdasdaskdhasdkahsdjhasjdhasjkdhkajshdkjashdkjashdkjahskdjhaskjdhkj');
                         fs.rmdirSync('tmp/'+req.files.uploads['sha1'], { recursive: true });
                         fileModel.insert(req.files.uploads,(dbStatus)=>{
                         

@@ -100,23 +100,34 @@ module.exports= {
                     console.log('chunk count '+chunkCount);
                     paths.push(path);
                     fs.writeFile(path,message['buffer'],(err)=>{
-                        console.log(err);
+                        console.log('Error inside async fs write ',err);
                         if(chunkCount==downloadCount)
                         {
                             paths.sort();
                             console.log('paths of file to be written to disk',paths);
-                            splitFile.mergeFiles(paths, 'downloaded/'+fileName)
+                            splitFile.mergeFiles(paths, 'downloaded/'+fileHash)
                             .then(() => {
                                 /*encryptor.decryptFile('encrypted.dat', 'output_file.txt', key, function(err) {
                                     // Decryption complete.
                                 });*/
+                                console.log('paths length = > '+paths.length);
+                                for(let j=0;j<paths.length;j++)
+                                {
+                                    fs.unlink(paths[j],function (err){
+                                        console.log(err);
+                                    });
+                                }
+
                                 console.log('Done!');
+                                downloadCount=0;
+                                paths=[];
+                                callback(`${__dirname}`+`/../downloaded/`+fileHash);
                             })
                             .catch((err) => {
                                 console.log('Error: ', err);
+                                callback('invalid');
                             });
-                            downloadCount=0;
-                            paths=[];
+
                         }
                     });
                 }); 

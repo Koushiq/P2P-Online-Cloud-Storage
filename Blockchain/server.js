@@ -7,55 +7,84 @@ var clio = require('socket.io-client');
 var socket1 = clio.connect("http://localhost:3001");
 var socket2 = clio.connect("http://localhost:3002")
 var socket3 = clio.connect("http://localhost:3003")
-var socketIDs = [];
+var socketlist = [];
+let conncount = 0;
+let integrityVote = 0;
+let totalpeer = 3;
+let port = 5000;
+let fs = require('fs');
+const ipv4 = (require("ip")).address();
 
-function isEmpty(arg) {
-    for (var item in arg) {
-      return false;
-    }
-    return true;
-  }
 
-var list ={FileName: "Anyfile", Author:"Sowvik",TimeStamp:"1/1/2021", Size:"500MB", Hash:"dsjfoiJKLJSLKJhflkzxnl85290sjdJFDSKL",Extension: ".mp3"}
+
+
+let data = JSON.parse(fs.readFileSync('datasource.json'));
+console.log(data);
 
 
 
 
 io.on('connection', (socket)=> {
+    conncount++
+    if(conncount==2){
+        console.log(socket.id);
+        for(let i = 0; i<data.length; i++){
+            io.to(socket.id).emit('block',data[i]['data']);
+        }
 
-    socketIDs.push(socket.id);
-    socket.emit('servermessage', "This message is from server");
-});
 
-socket1.on("peer1message", (data)=>{
-    console.log("Received from Peer-1: "+data);
-});
-socket2.on("peer2message", (data)=>{
-    console.log("Received from Peer-2: "+data);
-});
-
-socket3.on("peer3message", (data)=>{
-    console.log("Received from Peer-3: "+data);
+    }
 });
 
-socket1.on("ack", (data)=>{
-    console.log("Received from Peer-1: "+data);
-});
-socket2.on("ack", (data)=>{
-    console.log("Received from Peer-2: "+data);
-});
+let sockets = JSON.parse(fs.readFileSync('trackerlist.json'));
+let localtrackers = sockets;
 
-socket3.on("ack", (data)=>{
-    console.log("Received from Peer-3: "+data);
-});
+for(let i = 0; i<sockets.length; i++){
+    if(parseInt(sockets[i]['port']) !== port){
+        console.log(sockets[i]['port']);
+        socketlist.push(clio.connect("http://"+sockets[i]['ipv4']+":"+sockets[i]['port']));
+    }
+}
 
-server.listen(3000, ()=>{
-    console.log("Server is UP *: 3000");
-})
+for(let i = 0; i<socketlist.length; i++){
+    if( socketlist[i]['ipv4'] !== ipv4 || parseInt(socketlist[i]['port']) !== port){
+        socketlist[i].on('message', (data)=>{
+           console.log(data);
+        });
+    }
+    else{
+        console.log('Same Port');
+    }
+}
+
+for(let i = 0; i<socketlist.length; i++){
+    if( socketlist[i]['ipv4'] !== ipv4 || parseInt(socketlist[i]['port']) !== port){
+        socketlist[i].on('ack', (data)=>{
+           console.log(data);
+        });
+    }
+}
+for(let i = 0; i<socketlist.length; i++){
+    if( socketlist[i]['ipv4'] !== ipv4 || parseInt(socketlist[i]['port']) !== port){
+        socketlist[i].on('vote', (data)=>{
+            integrityVote++;
+        });
+    }
+}
+
+console.log(ipv4);
 
 setTimeout(()=>{
-    io.on('connection', ()=>{
-        console.log("Socket ID: "+socketIDs[0]);
-        io.to(socketIDs[0]).emit('block',list);
-    })
-}, 300)
+
+    if(integrityVote > (totalpeer/2)){
+        console.log("Blockchain is not manipulated");
+    }
+    else{
+        console.log("There is manipulation in chain");
+    }
+
+}, 6000);
+
+server.listen(port, ()=>{
+    console.log("Server is UP *: "+port);
+});

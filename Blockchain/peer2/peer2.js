@@ -11,6 +11,7 @@ var fs = require('fs');
 let socketlist=[];
 const ipv4 = (require("ip")).address();
 let vote = 0;
+let totalpeer = 2;
 let queue = [];
 
 function isChainValid(bcdata){
@@ -45,7 +46,7 @@ io.on('connection', (socket)=>{
 for(let i = 0; i<socketlist.length; i++){
     if(localtrackers[i]['ipv4'] !== ipv4 || parseInt(localtrackers[i]['port']) !== port){
         socketlist[i].on('block', (data )=>{
-            console.log("Received from server",data);
+            console.log("Received data from server");
             queue.push(data);
             for( let i = 0; i<queue.length; i++){
                 blockchain.blockAdd(queue.shift());
@@ -66,13 +67,13 @@ for(let i = 0; i<socketlist.length; i++){
 for(let i = 0; i<socketlist.length; i++){
     if(localtrackers[i]['ipv4'] !== ipv4 || parseInt(localtrackers[i]['port']) !== port){
         socketlist[i].on('chaindata', (data )=>{
-            console.log("Received : "+JSON.stringify(data, null, 4));
+            console.log("Data Received from peer");
             bcdata = data;
         if(isChainValid(bcdata)){
             fs.writeFileSync('blockchain.json', JSON.stringify(bcdata, null, 4));
             vote++;
             io.on('connection', (socket)=>{
-                io.emit('vote', vote);
+                socket.emit('vote', "Peer-2 voted the blockchain is alright");
             })
         }
     else{
@@ -81,14 +82,35 @@ for(let i = 0; i<socketlist.length; i++){
         });
     }
 }
+for(let i = 0; i<socketlist.length; i++){
+    if(localtrackers[i]['ipv4'] !== ipv4 || parseInt(localtrackers[i]['port']) !== port){
+        socketlist[i].on('vote', (data )=>{
 
+            console.log("Vote Received: "+data);
+            vote++;
+            if(vote > (totalpeer/2)){
+                console.log("BlockChain is valid");
+            }
 
+    });
+    }
+}
+    for(let i = 0; i<socketlist.length; i++){
+        if(localtrackers[i]['ipv4'] !== ipv4 || parseInt(localtrackers[i]['port']) !== port){
+            socketlist[i].on('vote', (data )=>{
 
+                console.log("Vote Received: "+data);
+                vote++;
+                if(vote > (totalpeer/2)){
+                    console.log("BlockChain is valid");
+                }
 
-
+        });
+        }
+    }
 
 
  server.listen(port, ()=>{
     console.log("Peer-2 is up *: "+port);
-})
+});
 

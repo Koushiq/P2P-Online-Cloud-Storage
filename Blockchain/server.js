@@ -68,22 +68,13 @@ for(let i = 0; i<socketlist.length; i++){
     if( socketlist[i]['ipv4'] !== ipv4 || parseInt(socketlist[i]['port']) !== port){
         socketlist[i].on('vote', (data)=>{
             integrityVote++;
+            if(integrityVote>(totalpeer/2)){
+                console.log("Blockchain is valid");
+            }
         });
-    }
 }
-
+}
 console.log(ipv4);
-
-setTimeout(()=>{
-
-    if(integrityVote > (totalpeer/2)){
-        console.log("Blockchain is not manipulated");
-    }
-    else{
-        console.log("There is manipulation in chain");
-    }
-
-}, 6000);
 
 server.listen(port, ()=>{
     console.log("Server is UP *: "+port);

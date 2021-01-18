@@ -11,6 +11,7 @@ let port = 5001;
 let socketlist=[];
 const ipv4 = (require("ip")).address();
 let vote = 0;
+let totalpeer =2;
 
 let queue = [];
 
@@ -47,7 +48,7 @@ io.on('connection', (socket)=>{
 for(let i = 0; i<socketlist.length; i++){
     if(localtrackers[i]['ipv4'] !== ipv4 || parseInt(localtrackers[i]['port']) !== port){
         socketlist[i].on('block', (data )=>{
-        console.log("Received from server",data);
+        console.log("Received data from Server");
         queue.push(data);
         for( let i = 0; i<queue.length; i++){
             blockchain.blockAdd(queue.shift());
@@ -55,7 +56,6 @@ for(let i = 0; i<socketlist.length; i++){
 
         bcdata = blockchain.blockChainData();
         fs.writeFileSync('blockchain.json', JSON.stringify(bcdata, null, 4));
-
         io.on('connection', (socket)=>{
         socket.emit("ack","Peer-1 added block to the chain");
         io.emit('chaindata', bcdata);
@@ -76,7 +76,7 @@ for(let i = 0; i<socketlist.length; i++){
             fs.writeFileSync('blockchain.json', JSON.stringify(bcdata, null, 4));
             vote++;
             io.on('connection', (socket)=>{
-                io.emit('vote', vote);
+                socket.emit('vote',"Peer-1 Voted the blockchain is alright");
             })
         }
     else{
@@ -87,26 +87,20 @@ for(let i = 0; i<socketlist.length; i++){
 }
 
 
+for(let i = 0; i<socketlist.length; i++){
+    if(localtrackers[i]['ipv4'] !== ipv4 || parseInt(localtrackers[i]['port']) !== port){
+        socketlist[i].on('vote', (data )=>{
 
+            console.log("Vote Received: "+data);
+            vote++;
+            if(vote > (totalpeer/2)){
+                console.log("BlockChain is valid");
+            }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    });
+    }
+}
 
 server.listen(port, ()=>{
     console.log("Peer-1 is up *: "+port);
-})
+});

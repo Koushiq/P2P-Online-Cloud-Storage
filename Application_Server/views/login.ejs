@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="/assets/css/login.css">
+    <title>Login</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <h1>Login</h1>
+                <form action="" method="post">
+                    <table class="table">
+                        <tr>
+                            <th>Username</th>
+                            <td><input type="text" class="form-control" placeholder="Enter Username" name="username" id="username"></td>
+                        </tr>
+                        <tr>
+                            <th>Passoword</th>
+                            <td><input type="password" class="form-control" placeholder="Enter Password" name="password" id="password"></td>
+                        </tr>
+                        <tr>
+                            <td><a href="/registration">Register Here</a></td>
+                            <td>
+                                <input type="submit" class="btn btn-primary" value="Login">
+                            </td>
+                        </tr>
+
+                        <% for(let i=0;i<errLog.errors.length;i++) { %>
+                            <tr>
+                                <td></td>
+                                <td><%= errLog.errors[i].msg %></td>
+                            </tr>
+                        <% } %>
+
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

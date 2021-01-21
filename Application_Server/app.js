@@ -4,13 +4,16 @@ let bodyParser 	= require('body-parser');
 let uploadController = require('./controllers/uploadController');
 let trashboxController = require('./controllers/trashboxController');
 let downloadController = require('./controllers/downloadController');
+let registrationController = require('./controllers/registrationController');
+let loginController = require('./controllers/loginController');
+let cookieParser = require('cookie-parser');
+
 const fs = require('fs');
 
 let app = express();
 const server = http.createServer(app);
 const socketServer = require('socket.io')(server);
 const fileUpload = require('express-fileupload');
-
 
 app.use(fileUpload());
 
@@ -19,17 +22,22 @@ app.use('/upload/download/',express.static('downloaded'));
 app.use('/downloaded',express.static('downloaded'));
 
 app.use(bodyParser.urlencoded({extended: false}));
+app.use(cookieParser());
 
-
+app.use('/assets/css/',express.static('assets/css'));
+app.use('/assets/js/',express.static('assets/js'));
 
 app.use('/upload', uploadController);
 app.use('/trashbox',trashboxController);
 app.use('/downloadFile',downloadController);
+app.use('/registration',registrationController);
+app.use('/login',loginController);
+
 app.use(express.static('downloaded'));
 
 app.get('/',function(req,res)
 {
-    res.redirect('/upload');
+    res.redirect('/login');
 
 });
 

@@ -110,6 +110,25 @@ module.exports= {
                                 /*encryptor.decryptFile('encrypted.dat', 'output_file.txt', key, function(err) {
                                     // Decryption complete.
                                 });*/
+                                /*fs.readFile('download.json',(err,data)=>{
+                                    console.log(err);
+                                    console.log(data);
+                                    let x =[];
+                                     x = JSON.parse(data);
+
+                                    x[fileHash]=Date.now()+ (1000*3600*24);
+
+                                    fs.writeFile('download.json',JSON.stringify(x,null,4),(err)=>{
+                                                if(err==null)
+                                                {
+                                                    console.log('JSON log updated');
+                                                }
+                                    });
+
+                                });*/
+                                let x =JSON.parse( fs.readFileSync('download.json'));
+                                x[fileHash]=Date.now()+ (1000*3600*24);
+                                fs.writeFileSync('download.json',JSON.stringify(x,null,4));
                                 console.log('paths length = > '+paths.length);
                                 for(let j=0;j<paths.length;j++)
                                 {

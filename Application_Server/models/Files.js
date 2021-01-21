@@ -4,7 +4,7 @@ let date = new Date().toISOString().
   replace(/\..+/, '') ;
 module.exports =
 {
-    insert: (files, callback)=>{
+    insert: (files,username, callback)=>{
        /*  let name = files.name;
         let sha1=files.sha1;
         let size=file.size;
@@ -17,17 +17,19 @@ module.exports =
         //console.log("file name is "+name);
 		let sql = "insert into Files values(?,?,?,?,?,?,?,?,?)";
 		//console.log(sql);
-		db.execute(sql,['',name,sha1,date,'king',size,null,'alive',null], (status)=>{
+		db.execute(sql,['',name,sha1,date,username,size,null,'alive',null], (status)=>{
             //console.log(result[0]);
             console.log("Rows inserted : "+status);
             if(status)
             {
                 console.log("inserted to app db ");
+
             }
             else
             {
                 console.log("not inserted to app db ");
             }
+            callback(status);
 		});
     },
     getFileHash:(user,callback)=>{

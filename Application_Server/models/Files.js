@@ -1,6 +1,6 @@
 const db = require('./db');
 let date = new Date().toISOString().
-  replace(/T/, ' ').      
+  replace(/T/, ' ').
   replace(/\..+/, '') ;
 module.exports =
 {
@@ -64,6 +64,17 @@ module.exports =
            // console.log(sql);
            // console.log(user);
             console.log('Delete status is '+status);
+        });
+    }
+    ,
+
+    getSumandUserName:(param, callback)=>{
+        let sql ="SELECT CreatedBy, SUM(Filesize) from files group by CreatedBy ORDER BY SUM(Filesize) desc";
+        db.getResults(sql,'',(result)=>{
+            if(result.length>0){
+                console.log("Getting Sum and Result");
+                return callback(result);}
+            else{return callback([]);}
         });
     }
 }

@@ -1,0 +1,28 @@
+{
+  "name": "p2p-online-cloud-storage",
+  "version": "1.0.0",
+  "description": "Welcome to the repository of P2P online cloud storage",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Koushiq/P2P-Online-Cloud-Storage.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Koushiq/P2P-Online-Cloud-Storage/issues"
+  },
+  "homepage": "https://github.com/Koushiq/P2P-Online-Cloud-Storage#readme",
+  "dependencies": {
+    "ejs-lint": "^1.1.0",
+    "express-validator": "^6.9.2",
+    "ip": "^1.1.5",
+    "modules": "^0.4.0",
+    "node": "^15.4.0",
+    "socket.io": "^3.1.0",
+    "socket.io-client": "^3.1.0"
+  }
+}

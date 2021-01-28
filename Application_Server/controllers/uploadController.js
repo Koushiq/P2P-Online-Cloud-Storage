@@ -6,7 +6,7 @@ const fileModel = require('../models/Files.js');
 const fs = require('fs');
 const getFileService = require('../services/getFileService.js');
 const socketService= require('../services/socketService2.js');
-let dhtData = JSON.parse(fs.readFileSync('dht.json'));
+
 
 router.get('*', function (req, res, next) {
     if (req.cookies['username'] == null) {
@@ -15,7 +15,6 @@ router.get('*', function (req, res, next) {
         next();
     }
 });
-
 
 
 
@@ -31,8 +30,8 @@ router.get('/',function(req,res){
 
 
 router.get('/download/:id',function(req,res){
-    
-    //get file hash from db 
+    let dhtData = JSON.parse(fs.readFileSync('dht.json'));
+    //get file hash from db
     let username = req.cookies['username'];
     fileModel.getFileHash([req.params.id,'alive'],(results)=>{
 

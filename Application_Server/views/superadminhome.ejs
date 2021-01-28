@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Admin Home Page</title>
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <h1>Super Admin Home Page</h1>
+    <a class="btn btn-danger" href="/adminlogout">Log Out</a> | <a class="btn btn-info" href="/peeradd">Add Peer</a> | <a class="btn btn-warning" href="/adminadd">Add Admin</a>
+    <h1>List of Admins Available: </h1>
+    <div class="container">
+    <table class = "table" style="text-align: middle;" border="1">
+        <th>
+            Name
+        </th>
+        <th>
+            Username
+        </th>
+        <th>
+            Password
+        </th>
+
+        <% for (var i=0;i<stringResult.length;i++) { %>
+            <tr class = "info">
+                <td>
+                    <%=stringResult[i]["name"] %>
+                </td>
+                <td>
+                    <%=stringResult[i]["username"] %>
+                </td>
+                <td>
+                    <%=stringResult[i]["password"] %>
+                </td>
+
+
+
+
+
+
+
+
+                  </td>
+         <%}%>
+
+    </table>
+</div>
+<div class="container">
+    <h1>Peer List</h1>
+    <table class = "table" style="text-align: middle;" border="1">
+        <th>
+            IP Address
+        </th>
+        <th>
+            Port
+        </th>
+
+        <% for (var i=0;i<trackerlist.length;i++) { %>
+            <tr class = "info">
+                <td>
+                    <%=trackerlist[i]["ipv4"] %>
+                </td>
+                <td>
+                    <%=trackerlist[i]["port"] %>
+
+         <%}%>
+
+    </table>
+</div>
+</body>
+</html>

@@ -6,6 +6,13 @@ let trashboxController = require('./controllers/trashboxController');
 let downloadController = require('./controllers/downloadController');
 let registrationController = require('./controllers/registrationController');
 let loginController = require('./controllers/loginController');
+let logoutController = require('./controllers/logoutController');
+let adminLoginController = require('./controllers/adminLoginController');
+let adminLogoutController = require('./controllers/adminLogoutController');
+let adminHomePageController = require('./controllers/adminHomePageController');
+let superAdminHomePageController = require('./controllers/superAdminHomePageController');
+let adminAddController = require('./controllers/adminAddController');
+let peerAddController = require('./controllers/peerAddController');
 let cookieParser = require('cookie-parser');
 
 const fs = require('fs');
@@ -32,6 +39,14 @@ app.use('/trashbox',trashboxController);
 app.use('/downloadFile',downloadController);
 app.use('/registration',registrationController);
 app.use('/login',loginController);
+app.use('/logout', logoutController);
+app.use('/adminLogin', adminLoginController);
+app.use('/adminlogout', adminLogoutController)
+app.use('/adminhome', adminHomePageController);
+app.use('/superadminhome', superAdminHomePageController);
+app.use('/adminadd', adminAddController);
+app.use('/peeradd', peerAddController);
+
 
 app.use(express.static('downloaded'));
 
@@ -41,12 +56,10 @@ app.get('/',function(req,res)
 
 });
 
-
-
 //let port = process.env["PORT"];
 let port =3000;
 server.listen(port, () => {
-    
+
     console.log('Server running at '+port);
 });
 

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Home Page</title>
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <h1>Admin Home Page</h1>
+    <a class="btn btn-danger" href="/adminlogout">Log Out</a>
+    <h1>User List With Data Consumption: </h1>
+    <div  class="container">
+    <table class ="table" style="text-align: middle;" border="1">
+        <th>
+            Username
+        </th>
+        <th>
+            Consumed Data
+        </th>
+        <% for (var i=0;i<stringResult.length;i++) { %>
+            <tr class="success">
+                <td>
+                    <%=stringResult[i]["CreatedBy"] %>
+                </td>
+
+
+                    <td>
+
+                        <% var size=stringResult[i]["SUM(Filesize)"];
+                        var rem=size%1024;
+                        size=size/1024;
+                        var unit=" KB";
+                        if(size>=1024)
+                        {
+                            size=size/1024;
+                            unit=" MB";
+                        }
+                        if(size>=1024)
+                        {
+                          size=size/1024;
+                          unit=" GB";
+                        }
+
+
+                        %>
+
+                        <%= Math.round(size)+"."+ rem + unit %>
+
+
+
+                      </td>
+
+
+
+
+
+
+                  </td>
+         <%}%>
+
+    </table>
+</div>
+</body>
+</html>

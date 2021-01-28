@@ -4,11 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trashbox</title>
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <a href="/trashbox">Trashbox</a> | <a href="/upload">Upload</a>
+    <a href="/trashbox">Trashbox</a> | <a href="/upload">Upload</a> | <a href="/logout">Log Out</a>
     <h1>File list : </h1>
-    <table style="text-align: left;" border="1">
+    <table class = "table" style="text-align: left;" border="1">
         <th>
             Filename
         </th>
@@ -21,23 +26,23 @@
         <th>
             Actions
         </th>
-       
+
         <% for (var i=0;i<results.length;i++) { %>
-            <tr>
+            <tr class = "danger">
                 <td>
                     <%=results[i].Filename %>
                 </td>
                 <td>
                     <%=results[i].DeletedAt.toISOString().
-                    replace(/T/, ' ').      
+                    replace(/T/, ' ').
                     replace(/\..+/, '') %>
                 </td>
                 <td>
-                    
-                  <% var size=results[i].Filesize; 
-                  var rem=size%1024; 
+
+                  <% var size=results[i].Filesize;
+                  var rem=size%1024;
                   size=size/1024;
-                  var unit=" KB";  
+                  var unit=" KB";
                   if(size>=1024)
                   {
                       size=size/1024;
@@ -48,18 +53,18 @@
                     size=size/1024;
                     unit=" GB";
                   }
-                  
+
                   %>
-                    
+
                   <%= Math.round(size)+"."+ rem + unit %>
-                   
+
                 </td>
                 <td>
-                    <a href="#">Restore</a> | 
+                    <a href="#">Restore</a> |
                     <a href="upload/delete/<%=results[i].FileID%>">Delete</a>
                 </td>
             </tr>
         <% } %>
-       
+
 </body>
 </html>

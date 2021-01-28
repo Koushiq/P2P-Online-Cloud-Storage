@@ -4,15 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload Files</title>
+    <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 
 <body>
-    <a href="/trashbox">Trashbox</a> | <a href="/upload">Upload</a>
-    
+    <a class="btn btn-warning" href="/trashbox">Trashbox</a> | <a class="btn btn-info" href="/upload">Upload</a> | <a class="btn btn-danger" href="/logout">Logout</a>
+
     <h1>Upload Files Here</h1>
     <form action="" method="post" enctype="multipart/form-data">
-        <table>
-            <tr>
+        <div class="container">
+        <table class="table">
+            <tr class="warning">
                 <td>Choose File : </td>
             </tr>
             <tr>
@@ -20,16 +26,16 @@
                     <input type="file" name="uploads" id="" enctype="multipart/form-data">
                 </td>
             </tr>
-            <tr>
+            <tr class="info">
                 <td>
-                    <input type="submit" value="Upload">
+                    <input class="btn btn-success" type="submit" value="Upload">
                 </td>
             </tr>
         </table>
     </form>
 
     <h1>File list : </h1>
-    <table style="text-align: left;" border="1">
+    <table class="table table-hover" style="text-align: left;" border="1">
         <th>
             Filename
         </th>
@@ -42,23 +48,23 @@
         <th>
             Actions
         </th>
-       
+
         <% for (var i=0;i<results.length;i++) { %>
-            <tr>
+            <tr class="active">
                 <td>
                     <%=results[i].Filename %>
                 </td>
                 <td>
                     <%=results[i].CreatedAt.toISOString().
-                    replace(/T/, ' ').      
+                    replace(/T/, ' ').
                     replace(/\..+/, '') %>
                 </td>
                 <td>
-                    
-                  <% var size=results[i].Filesize; 
-                  var rem=size%1024; 
+
+                  <% var size=results[i].Filesize;
+                  var rem=size%1024;
                   size=size/1024;
-                  var unit=" KB";  
+                  var unit=" KB";
                   if(size>=1024)
                   {
                       size=size/1024;
@@ -69,22 +75,23 @@
                     size=size/1024;
                     unit=" GB";
                   }
-                  
+
                   %>
-                    
+
                   <%= Math.round(size)+"."+ rem + unit %>
-                   
+
                 </td>
                 <td>
-                    <a href="upload/download/<%=results[i].FileID%>">Download</a> | 
+                    <a href="upload/download/<%=results[i].FileID%>">Download</a> |
                     <a href="upload/delete/<%=results[i].FileID%>">Delete</a>
                 </td>
             </tr>
         <% } %>
-       
 
-       
-        
+
+
+
     </table>
+</div>
 </body>
 </html>

@@ -1,0 +1,77 @@
+{
+    "chain": [
+        {
+            "timestamp": "01/01/2020",
+            "data": "Genesis Block",
+            "previousHash": "0",
+            "hash": "57b1e433cc006e56318ecc19cddd4b3ee96b6c6e79b373ed0ce4f85048e3bd61",
+            "nonce": 0
+        },
+        {
+            "timestamp": "2021-01-23 17:11:25",
+            "data": {
+                "Filename": "avg_free_x86_all_2011_1120a3152.exe",
+                "Filehash": "0258447fdbd9c681e5eb19ab76bb8d8c1ac8f6a3",
+                "CreatedAt": 1611421981085,
+                "CreatedBy": "itzsowvik",
+                "Filesize": 141707952
+            },
+            "previousHash": "57b1e433cc006e56318ecc19cddd4b3ee96b6c6e79b373ed0ce4f85048e3bd61",
+            "hash": "00f63dd426ace66306c521986d916e54277bf69461a0b554ee941e72c9ebb744",
+            "nonce": 468
+        },
+        {
+            "timestamp": "2021-01-23 17:11:25",
+            "data": {
+                "Filename": "road-trip-with-raj-z6JizaUWCk0-unsplash.jpg",
+                "Filehash": "7befe02321d2f0ee7dc12323038de531d92c9c2c",
+                "CreatedAt": 1611422104524,
+                "CreatedBy": "itzsowvik",
+                "Filesize": 9239465
+            },
+            "previousHash": "00f63dd426ace66306c521986d916e54277bf69461a0b554ee941e72c9ebb744",
+            "hash": "09a8a07a49d15aa16d6fb17b8fd467c311661d0dbf2963d1859a322dddbe6280",
+            "nonce": 40
+        },
+        {
+            "timestamp": "2021-01-23 19:45:12",
+            "data": {
+                "Filename": "tim-patch-A31etNId_pA-unsplash.jpg",
+                "Filehash": "fa12d3ebc160007e7f9f599a356db1c900553569",
+                "CreatedAt": 1611431198459,
+                "CreatedBy": "dimik",
+                "Filesize": 4367597
+            },
+            "previousHash": "09a8a07a49d15aa16d6fb17b8fd467c311661d0dbf2963d1859a322dddbe6280",
+            "hash": "00034849cd79f3ecc250a30c5d4039f3428afa82c7f75a4094195bebaeb20a58",
+            "nonce": 3455
+        },
+        {
+            "timestamp": "2021-01-23 19:45:12",
+            "data": {
+                "Filename": "filestorage.sql",
+                "Filehash": "8dfe5967449ada1ca65e5b13a9767b4602e03b72",
+                "CreatedAt": 1611431208095,
+                "CreatedBy": "dimik",
+                "Filesize": 10258
+            },
+            "previousHash": "00034849cd79f3ecc250a30c5d4039f3428afa82c7f75a4094195bebaeb20a58",
+            "hash": "0072a1fb5deab6e987f437425c3ed6b6052b731415f97355c283d7de3f9610ae",
+            "nonce": 187
+        },
+        {
+            "timestamp": "2021-01-23 19:45:12",
+            "data": {
+                "Filename": "pw102-free.exe",
+                "Filehash": "cf2753cd599b5e5e8d7546200589015d89a432c5",
+                "CreatedAt": 1611439507094,
+                "CreatedBy": "qwerty",
+                "Filesize": 74681768
+            },
+            "previousHash": "05f5cb61b1d93717b43c615b8d9008acebd2db15d7c82a0e53cec7465037e4a7",
+            "hash": "00febfd62462d9fd0550c3c5afdce80f8959fd72889b866d97441b95f1eb72a8",
+            "nonce": 173
+        }
+    ],
+    "difficulty": 4
+}

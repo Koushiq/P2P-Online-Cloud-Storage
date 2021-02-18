@@ -2,10 +2,14 @@ const express 	= require('express');
 const router  = express.Router();
 const adminModel = require('../models/Admins');
 
+
+//Serve add admin form.
 router.get('/',(req,res)=>{
     let errLog={errors:[]};
     res.render('adminadd',{errLog});
 });
+
+//post/insert admin add form.
 
 router.post('/', (req, res)=>{
     let adminInfo = {};

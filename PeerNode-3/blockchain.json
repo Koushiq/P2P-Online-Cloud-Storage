@@ -17,9 +17,9 @@
                 "Filesize": 1364254
             },
             "previousHash": "57b1e433cc006e56318ecc19cddd4b3ee96b6c6e79b373ed0ce4f85048e3bd61",
-            "hash": "0003c1a3e2435007b8400ab23df14b12b390ca17f0e2b90d7b2a91fa35307196",
-            "nonce": 1042
+            "hash": "00300aba97182280d5a75b3d3437309b014ada246092f5bda35c6ff32314151f",
+            "nonce": 303
         }
     ],
-    "difficulty": 2
+    "difficulty": 1
 }

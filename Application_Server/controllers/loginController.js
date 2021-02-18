@@ -3,6 +3,7 @@ const router  = express.Router();
 const usersModel = require('../models/Users.js');
 const { body, validationResult } = require('express-validator');
 
+//Serve Login page.
 router.get('/',function(req,res){
 
     let errLog={errors:[]};
@@ -10,6 +11,7 @@ router.get('/',function(req,res){
 
 });
 
+//Validate and Authorize user
 router.post('/',
 body('username').isLength({min:1}).withMessage('Username can not empty'),
 body('password').isLength({ min: 1 }).withMessage('Password can not empty'),
@@ -29,8 +31,8 @@ function(req,res){
         usersModel.getUser(user,function(result){
             if(result.length>0)
             {
-                // set cookie 
-                res.cookie('username', user['Username'], {expire: 360000 + Date.now()}); 
+                // set cookie
+                res.cookie('username', user['Username'], {expire: 360000 + Date.now()});
                 res.redirect('/upload');
             }
             else

@@ -4,18 +4,18 @@ const encryptor = require('file-encryptor');
 
 module.exports = {
     processFiles:(files,callback)=>{
-      let key = 'random';
+      let key = 'random'; //Set encryption key
       let status=true;
-      
-      let targetDir = "./tmp/"+files.sha1;
-      try
+
+      let targetDir = "./tmp/"+files.sha1; // set destination directory using the uploaded file hash string
+      try //try to create directory
       {
-        if(!fs.existsSync(targetDir))
+        if(!fs.existsSync(targetDir)) //if directory not exists then create
         {
-          fs.mkdirSync(targetDir);
+          fs.mkdirSync(targetDir); //Create directory
         }
       }
-      catch(err)
+      catch(err) // throw error
       {
         console.log("Dir not created reason:  "+err);
         status = false  ;
@@ -27,7 +27,7 @@ module.exports = {
 
         let path = targetDir+"/"+files.sha1+"."+files.extension;
         console.log(path);
-          files.mv(path,function(err){   // copy file 
+          files.mv(path,function(err){   // copy file
             if(err)
             {
               status = false;
@@ -35,13 +35,13 @@ module.exports = {
             }
             else
             {
-              encryptor.encryptFile(path, files.sha1, key, function(err) {
-                  if(err==null || err==undefined)
+              encryptor.encryptFile(path, files.sha1, key, function(err) { //Encrypt file
+                  if(err==null || err==undefined) //if enc error is null
                   {
                     splitFile.splitFileBySize(path, 512*1024)  // shard copied file
-                        .then((names) => {
+                        .then((names) => { //
 
-                          try {
+                          try { //Try to delete initial uploaded files as encryption is done
 
                             fs.unlinkSync(path);
                             fs.unlinkSync(files.sha1);
@@ -55,16 +55,16 @@ module.exports = {
                             fileString[h]=s;
                             fs.writeFileSync(x,JSON.stringify(fileString,null,4));
                             //file removed
-                            callback(targetDir);
+                            callback(targetDir); //send ack of success
 
                           } catch(err) {
                             console.error(err);
-                            callback(status);
+                            callback(status); // send ack of error
                           }
                         })
                         .catch((err) => {
                           console.log('File not split reason : ', err);
-                          callback(status);
+                          callback(status); //Send ack of file sharding error
                         });
                   }
               });

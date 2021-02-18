@@ -2,11 +2,13 @@ const express 	= require('express');
 const router  = express.Router();
 const fs = require('fs');
 
+//Redirect to peeradd page.
 router.get('/',(req,res)=>{
     let errLog={errors:[]};
     res.render('peeradd',{errLog});
 });
 
+//Submit new peer address and port
 router.post('/', (req, res)=>{
     let peerInfo = {};
     peerInfo['ipv4'] = req.body.ip;

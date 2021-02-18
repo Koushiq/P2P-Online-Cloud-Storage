@@ -10,8 +10,9 @@ router.get('*', function (req, res, next) {
     }
 });
 
+//Show soft deleted items.
 router.get('/',(req,res)=>{
-    
+
     fileModel.get(['king','trashed'],(results)=>{
         res.render('trashbox',{results});
     });

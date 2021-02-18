@@ -1,6 +1,7 @@
 let express = require('express');
 let router = express.Router();
 
+//Logout and clear session cookies.
 router.get('/', (req, res)=>{
     cookie = req.cookies;
     for (var prop in cookie) {

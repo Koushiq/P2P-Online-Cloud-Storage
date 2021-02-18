@@ -6,6 +6,7 @@ let userNames = [];
 let fileSize =  [];
 let fileData =  {};
 
+
 router.get('*', function (req, res, next) {
     if (req.cookies['username'] == null) {
         res.redirect('/adminlogin');
@@ -17,7 +18,7 @@ router.get('*', function (req, res, next) {
 
 
 
-
+//Rendering super admin home page.
 router.get('/', (req, res)=>{
 
     adminModel.getAllAdmin('', (results)=>{

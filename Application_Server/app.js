@@ -47,7 +47,6 @@ app.use('/superadminhome', superAdminHomePageController);
 app.use('/adminadd', adminAddController);
 app.use('/peeradd', peerAddController);
 
-
 app.use(express.static('downloaded'));
 
 app.get('/',function(req,res)

@@ -3,6 +3,7 @@ const router  = express.Router();
 const adminsModel = require('../models/Admins.js');
 const { body, validationResult } = require('express-validator');
 
+//Serve Admin Login page
 router.get('/',function(req,res){
 
     let errLog={errors:[]};
@@ -10,6 +11,7 @@ router.get('/',function(req,res){
 
 });
 
+//Validate and authorize login.
 router.post('/',
 body('username').isLength({min:1}).withMessage('Username can not empty'),
 body('password').isLength({ min: 1 }).withMessage('Password can not empty'),

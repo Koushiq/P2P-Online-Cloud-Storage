@@ -16,7 +16,7 @@ router.get('*', function (req, res, next) {
 
 
 
-
+//Server admin homepage.
 router.get('/', (req, res)=>{
 
     fileModel.getSumandUserName('', (results)=>{

@@ -3,15 +3,17 @@ const router  = express.Router();
 const usersModel = require('../models/Users.js');
 const { body, validationResult } = require('express-validator');
 let date = new Date().toISOString().
-  replace(/T/, ' ').      
+  replace(/T/, ' ').
   replace(/\..+/, '') ;
 let user ='';
 
+//Render registration page.
 router.get('/',(req,res)=>{
     let errLog={errors:[]};
     res.render('registration',{errLog});
 });
 
+//Validate and register user.
 router.post('/',
 body('username').isLength({min:4}).withMessage('Username can not empty or shorter than 4'),
 body('firstname').isLength({min:4}).withMessage('Firstname can not empty or shorter than 4').isAlpha().withMessage('Only Characters allowed in Firstname'),
@@ -57,8 +59,8 @@ body('dob').isDate().withMessage('Invalid Date'),
             }
         }
     });
-    
+
 });
 
 
-module.exports= router; 
+module.exports= router;
